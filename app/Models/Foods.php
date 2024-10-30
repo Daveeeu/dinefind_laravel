@@ -16,8 +16,9 @@ class Foods extends Model
 
     public function allergens()
     {
-        return $this->belongsToMany(Allergen::class, 'food_allergen');
+        return $this->belongsToMany(Allergen::class, 'food_allergen', 'food_id', 'allergen_id');
     }
+
 
     public function menus()
     {

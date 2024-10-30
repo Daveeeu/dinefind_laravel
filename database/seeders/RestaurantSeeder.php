@@ -6,7 +6,7 @@
     use App\Models\Foods;
     use App\Models\Restaurant;
     use App\Models\Food;
-    use App\Models\FoodAllergen;
+    use App\Models\FoodAllergens;
     use Illuminate\Database\Seeder;
     use Illuminate\Support\Facades\DB;
 
