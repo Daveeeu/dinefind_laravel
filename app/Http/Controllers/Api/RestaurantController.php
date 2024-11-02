@@ -55,7 +55,8 @@
 
             // Távolság szűrés
             if ($userLat && $userLng) {
-                $restaurantsQuery->havingRaw("(6371 * acos(cos(radians(?)) * cos(radians(lat)) * cos(radians(lng) - radians(?)) + sin(radians(?)) * sin(radians(lat)))) <= ?", [$userLat, $userLng, $userLat, $maxDistance]);
+                $restaurantsQuery->whereRaw("(6371 * acos(cos(radians(?)) * cos(radians(lat)) * cos(radians(lng) - radians(?)) + sin(radians(?)) * sin(radians(lat)))) <= ?",
+                    [$userLat, $userLng, $userLat, $maxDistance]);
             }
 
             $restaurants = $restaurantsQuery->offset($offset)->limit($limit)->get();
