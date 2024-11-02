@@ -6,12 +6,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\RestaurantResource;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class RestaurantController extends Controller
 {
-    public function index()
+    public function index(Request $request): JsonResource
     {
-        $restaurants = Restaurant::with('foods.allergens')->get();
+        $limit = $request->query('limit', 10);
+        $offset = $request->query('offset', 0);
+
+        $restaurants = Restaurant::with('foods.allergens')
+            ->skip($offset)
+            ->take($limit)
+            ->get();
+
         return RestaurantResource::collection($restaurants);
     }
 }
