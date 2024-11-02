@@ -5,7 +5,6 @@
     use App\Models\Allergen;
     use App\Models\Foods;
     use App\Models\Restaurant;
-    use App\Models\Food;
     use App\Models\FoodAllergens;
     use Illuminate\Database\Seeder;
     use Illuminate\Support\Facades\DB;
@@ -27,16 +26,21 @@
 
                 $allergens = Allergen::all()->pluck('id')->toArray();
 
-
                 // Hozz létre 10 éttermet
                 for ($i = 1; $i <= 10; $i++) {
+                    // Generálj véletlenszerű lat és lng értékeket
+                    $lat = mt_rand(46000000, 48500000) / 1000000;
+                    $lng = mt_rand(16000000, 22500000) / 1000000;
+
                     $restaurant = Restaurant::create([
                         'name' => "Étterem $i",
                         'description' => "Ez az Étterem $i leírása.",
                         'address' => "Cím $i",
                         'profile_image' => "https://example.com/images/restaurant_profile.jpg",
-//                        'image_url' => "https://example.com/images/restaurant.jpg",
+                        // 'image_url' => "https://example.com/images/restaurant.jpg",
                         'contact_number' => "123-456-789$i",
+                        'lat' => $lat,
+                        'lng' => $lng,
                     ]);
 
                     // Minden étteremhez 50 étel

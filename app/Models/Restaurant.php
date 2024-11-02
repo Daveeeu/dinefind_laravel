@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Restaurant extends Model
 {
     protected $fillable = [
-        'name', 'description', 'profile_image', 'contact_number', 'address', 'website'
+        'name', 'description', 'profile_image', 'contact_number', 'address', 'website', 'lat', 'lng'
     ];
 
     public function reservations(): HasMany
@@ -20,6 +20,5 @@ class Restaurant extends Model
     {
         return $this->hasMany(Foods::class);
     }
-
 }
 
