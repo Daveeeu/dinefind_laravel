@@ -1,44 +1,31 @@
 version: '3.8'
 
 services:
-    app:
-        image: php:8.2-fpm
-        container_name: dinefind_app
-        working_dir: /var/www/html
-        volumes:
-            - .:/var/www/html
-            - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-        networks:
-            - dinefind_network
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html/public
+    networks:
+      - laravel_network
 
-    webserver:
-        image: nginx:alpine
-        container_name: dinefind_web
-        depends_on:
-            - app
-        volumes:
-            - .:/var/www/html
-            - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
-        ports:
-            - "80:80"
-        networks:
-            - dinefind_network
-
-    db:
-        image: mysql:8.0
-        container_name: dinefind_db
-        environment:
-            MYSQL_ROOT_PASSWORD: root_password
-            MYSQL_DATABASE: dinefind_db
-            MYSQL_USER: dinefind_user
-            MYSQL_PASSWORD: dinefind_password
-        volumes:
-            - dbdata:/var/lib/mysql
-        networks:
-            - dinefind_network
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravelpassword
+    ports:
+      - "3307:3306"
+    networks:
+      - laravel_network
 
 networks:
-    dinefind_network:
-
-volumes:
-    dbdata:
+  laravel_network:
+    driver: bridge
