@@ -53,8 +53,4 @@ class User extends Authenticatable
         return $this->hasMany(Reservation::class);
     }
 
-    public function companies()
-    {
-        return $this->belongsToMany(Company::class, 'user_company');
-    }
 }
