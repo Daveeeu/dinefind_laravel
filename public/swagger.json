@@ -1,0 +1,153 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "DineFind API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/restaurants": {
+            "get": {
+                "summary": "List all restaurants",
+                "description": "This method retrieves a list of restaurants based on optional search parameters and user location for distance filtering. It supports pagination through limit and offset parameters.",
+                "tags": ["Restaurants"],
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The number of restaurants to return. Default is 10.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "The offset for pagination. Default is 0.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 0
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "A search term to filter restaurants by name, address, website, or contact number. Default is an empty string.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "lat",
+                        "in": "query",
+                        "description": "The user's latitude for distance calculation. Required for distance filtering.",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "lng",
+                        "in": "query",
+                        "description": "The user's longitude for distance calculation. Required for distance filtering.",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "distance",
+                        "in": "query",
+                        "description": "The maximum distance (in kilometers) to search for restaurants. Default is 10.",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "format": "float",
+                            "default": 10
+                        }
+                    },
+                    {
+                        "name": "day",
+                        "in": "query",
+                        "description": "Day of the week for filtering based on opening hours (e.g., 'monday').",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "time",
+                        "in": "query",
+                        "description": "Time for filtering based on opening hours (e.g., '14:00:00').",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "time"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A collection of restaurants matching the search criteria.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/RestaurantResource"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No restaurants found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "RestaurantResource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "contact_number": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "website": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "profile_image": {
+                        "type": "string"
+                    },
+                    "lat": {
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "lng": {
+                        "type": "number",
+                        "format": "float"
+                    }
+                }
+            }
+        }
+    }
+}
