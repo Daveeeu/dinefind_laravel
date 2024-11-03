@@ -20,5 +20,13 @@ class Restaurant extends Model
     {
         return $this->hasMany(Foods::class);
     }
+
+    /**
+     * Get the opening hours for the restaurant.
+     */
+    public function openingHours()
+    {
+        return $this->hasMany(OpeningHour::class);
+    }
 }
 

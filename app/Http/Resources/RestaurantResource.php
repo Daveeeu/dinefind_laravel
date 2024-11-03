@@ -22,7 +22,8 @@ class RestaurantResource extends JsonResource
             'profile_image' => $this->profile_image,
             'contact_number' => $this->contact_number,
             'rating' => $this->rating,
-            'menu' => FoodResource::collection($this->foods), // Egy kapcsolódó FoodResource
+            'menu' => FoodResource::collection($this->foods),
+            'opening_hours' => OpeningHourResource::collection($this->openingHours),
         ];
     }
 }

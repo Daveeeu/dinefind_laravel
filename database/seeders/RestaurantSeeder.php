@@ -4,6 +4,7 @@
 
     use App\Models\Allergen;
     use App\Models\Foods;
+    use App\Models\OpeningHour;
     use App\Models\Restaurant;
     use App\Models\FoodAllergens;
     use Illuminate\Database\Seeder;
@@ -42,6 +43,28 @@
                         'lat' => $lat,
                         'lng' => $lng,
                     ]);
+
+                    // Nyitvatartási idők minden napra
+                    $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                    foreach ($daysOfWeek as $day) {
+                        // Véletlenszerű nyitási idő (7:00 - 12:00 között)
+                        $openHour = rand(7, 12);
+                        $openMinute = rand(0, 59);
+                        $openTime = sprintf('%02d:%02d:00', $openHour, $openMinute);
+
+                        // Véletlenszerű zárási idő (17:00 - 23:00 között)
+                        $closeHour = rand(17, 23);
+                        $closeMinute = rand(0, 59);
+                        $closeTime = sprintf('%02d:%02d:00', $closeHour, $closeMinute);
+
+                        OpeningHour::create([
+                            'restaurant_id' => $restaurant->id,
+                            'day_of_week' => $day,
+                            'open_time' => $openTime,
+                            'close_time' => $closeTime,
+                        ]);
+                    }
+
 
                     // Minden étteremhez 50 étel
                     for ($j = 1; $j <= 50; $j++) {

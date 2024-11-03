@@ -39,7 +39,11 @@
             $userLng = $request->query('lng');
             $maxDistance = (float) $request->query('distance', 10);
 
-            $restaurantsQuery = Restaurant::with(['foods.allergens'])
+            // Nyitvatartási paraméterek lekérdezése
+            $day = $request->query('day'); // pl. "monday"
+            $time = $request->query('time'); // pl. "14:00:00" (óra:perc:másodperc)
+
+            $restaurantsQuery = Restaurant::with(['foods.allergens', 'openingHours'])
                 ->select(['id', 'name', 'contact_number', 'address', 'website', 'description', 'profile_image', 'lat', 'lng']);
 
             // Szűrés a keresési feltételek alapján
@@ -59,8 +63,17 @@
                     [$userLat, $userLng, $userLat, $maxDistance]);
             }
 
-            $restaurants = $restaurantsQuery->offset($offset)->limit($limit)->get();
+            // Nyitvatartás szerinti szűrés
+            if ($day && $time) {
+                $restaurantsQuery->whereHas('openingHours', function ($query) use ($day, $time) {
+                    $query->where('day_of_week', $day)
+                        ->where('open_time', '<=', $time)
+                        ->where('close_time', '>=', $time);
+                });
+            }
 
+            $restaurants = $restaurantsQuery->offset($offset)->limit($limit)->get();
             return RestaurantResource::collection($restaurants);
         }
+
     }
