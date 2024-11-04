@@ -28,5 +28,11 @@ class Restaurant extends Model
     {
         return $this->hasMany(OpeningHour::class);
     }
+
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
+
 }
 
